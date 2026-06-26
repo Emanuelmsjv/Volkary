@@ -1,0 +1,44 @@
+const express = require('express')
+const { MongoClient } = require('mongodb')
+require('dotenv').config()
+
+const app = express()
+app.use(express.json())
+const client = new MongoClient(process.env.MONGODB_URI)
+
+async function start() {
+    await client.connect()
+    const db = client.db("watchlist")
+    const movies = db.collection('movies')
+
+    app.get('/api/movies', async (req, res) => {
+        const allMovies = await movies.find().toArray()
+        res.json(allMovies)
+    })
+
+    app.post('/api/movies', async (req, res) => {
+        const { title, year, genre, poster } = req.body
+        const result = await movies.insertOne({ title, year, genre, poster, watched: false, createdAt: new Date() })
+        res.json(result)
+    })
+
+    app.patch('/api/movies/:id', async (req, res) => {
+        const { ObjectId } = require('mongodb')
+        const movie = await movies.findOne({ _id: new ObjectId(req.params.id) })
+        const result = await movies.updateOne(
+            { _id: new ObjectId(req.params.id) },
+            { $set: { watched: !movie.watched } }
+        )
+        res.json(result)
+    })
+
+    app.delete('/api/movies/:id', async (req, res) => {
+        const { ObjectId } = require('mongodb')
+        const result = await movies.deleteOne({ _id: new ObjectId(req.params.id) })
+        res.json(result)
+    })
+
+    app.listen(3000, () => console.log("Running on 3000"))
+}
+
+start()
