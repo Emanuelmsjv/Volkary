@@ -7,7 +7,7 @@ const app = express()
 
 // Configure CORS to accept requests from Vercel domain
 app.use(cors({
-  origin: process.env.VITE_API_URL || 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://volkary.vercel.app'],
   credentials: true
 }))
 
