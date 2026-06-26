@@ -19,18 +19,18 @@ async function start() {
     const db = client.db("watchlist")
     const movies = db.collection('movies')
 
-    app.get('/api/movies', async (req, res) => {
+    app.get('/movies', async (req, res) => {
         const allMovies = await movies.find().toArray()
         res.json(allMovies)
     })
 
-    app.post('/api/movies', async (req, res) => {
+    app.post('/movies', async (req, res) => {
         const { title, year, genre, poster } = req.body
         const result = await movies.insertOne({ title, year, genre, poster, watched: false, createdAt: new Date() })
         res.json(result)
     })
 
-    app.patch('/api/movies/:id', async (req, res) => {
+    app.patch('/movies/:id', async (req, res) => {
         const { ObjectId } = require('mongodb')
         const movie = await movies.findOne({ _id: new ObjectId(req.params.id) })
         const result = await movies.updateOne(
@@ -40,7 +40,7 @@ async function start() {
         res.json(result)
     })
 
-    app.delete('/api/movies/:id', async (req, res) => {
+    app.delete('/movies/:id', async (req, res) => {
         const { ObjectId } = require('mongodb')
         const result = await movies.deleteOne({ _id: new ObjectId(req.params.id) })
         res.json(result)
