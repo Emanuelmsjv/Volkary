@@ -1,8 +1,16 @@
+const cors = require('cors')
 const express = require('express')
 const { MongoClient } = require('mongodb')
 require('dotenv').config()
 
 const app = express()
+
+// Configure CORS to accept requests from Vercel domain
+app.use(cors({
+  origin: process.env.VITE_API_URL || 'http://localhost:5173',
+  credentials: true
+}))
+
 app.use(express.json())
 const client = new MongoClient(process.env.MONGODB_URI)
 
