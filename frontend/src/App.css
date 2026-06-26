@@ -8,7 +8,6 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: #0f0f0f;
   color: #e0e0e0;
-  min-height: 100vh;
 }
 
 .app {
@@ -19,10 +18,9 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 2.2rem;
+  font-size: 2rem;
   margin-bottom: 30px;
   color: #fff;
-  letter-spacing: 1px;
 }
 
 form {
@@ -42,15 +40,10 @@ form input {
   color: #fff;
   font-size: 0.95rem;
   outline: none;
-  transition: border-color 0.2s;
 }
 
 form input:focus {
   border-color: #646cff;
-}
-
-form input::placeholder {
-  color: #666;
 }
 
 form button {
@@ -62,7 +55,6 @@ form button {
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 form button:hover {
@@ -83,12 +75,6 @@ form button:hover {
   background: #1a1a1a;
   border: 1px solid #2a2a2a;
   border-radius: 10px;
-  transition: border-color 0.2s, transform 0.15s;
-}
-
-.movie-card:hover {
-  border-color: #444;
-  transform: translateY(-1px);
 }
 
 .movie-card h3 {
@@ -98,10 +84,8 @@ form button:hover {
 }
 
 .movie-card p {
-  flex: 0 0 auto;
   font-size: 0.85rem;
   color: #888;
-  white-space: nowrap;
 }
 
 .movie-card button {
@@ -111,11 +95,6 @@ form button:hover {
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, transform 0.1s;
-}
-
-.movie-card button:active {
-  transform: scale(0.95);
 }
 
 .movie-card button:nth-child(3) {
@@ -144,9 +123,4 @@ form button:hover {
 .movie-card.watched h3 {
   text-decoration: line-through;
   color: #888;
-}
-
-.movie-card.watched button:nth-child(3) {
-  background: #333;
-  color: #aaa;
 }

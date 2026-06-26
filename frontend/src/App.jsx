@@ -3,36 +3,38 @@ import AddMovie from './AddMovie'
 import MovieList from './MovieList'
 import './App.css'
 
+const API = import.meta.env.VITE_API_URL || '/api'
+
 function App() {
   const [movies, setMovies] = useState([])
 
   useEffect(() => {
-    fetch('/api/movies')
+    fetch(`${API}/movies`)
       .then(res => res.json())
       .then(data => setMovies(data))
   }, [])
 
   const addMovie = async (movie) => {
-    await fetch('/api/movies', {
+    await fetch(`${API}/movies`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(movie)
     })
-    const res = await fetch('/api/movies')
+    const res = await fetch(`${API}/movies`)
     const data = await res.json()
     setMovies(data)
   }
 
   const toggleWatched = async (id) => {
-    await fetch(`/api/movies/${id}`, { method: 'PATCH' })
-    const res = await fetch('/api/movies')
+    await fetch(`${API}/movies/${id}`, { method: 'PATCH' })
+    const res = await fetch(`${API}/movies`)
     const data = await res.json()
     setMovies(data)
   }
 
   const deleteMovie = async (id) => {
-    await fetch(`/api/movies/${id}`, { method: 'DELETE' })
-    const res = await fetch('/api/movies')
+    await fetch(`${API}/movies/${id}`, { method: 'DELETE' })
+    const res = await fetch(`${API}/movies`)
     const data = await res.json()
     setMovies(data)
   }

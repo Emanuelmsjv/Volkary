@@ -5,12 +5,8 @@ function MovieCard({ movie, onToggle, onDelete }) {
             <p>{movie.year} {movie.genre}</p>
             <button onClick={() => onToggle(movie._id)}>{movie.watched ? 'Unwatch' : 'Watched'}</button>
             <button onClick={() => onDelete(movie._id)}>Delete</button>
-
         </div>
-
-
-    );
-
+    )
 }
 
 export default MovieCard

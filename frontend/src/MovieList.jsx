@@ -8,11 +8,11 @@ function MovieList({ movies, onToggle, onDelete }) {
                     key={movie._id}
                     movie={movie}
                     onToggle={onToggle}
-                    onDelete={onDelete}></MovieCard>
+                    onDelete={onDelete}
+                />
             ))}
         </div>
-    );
-
+    )
 }
 
 export default MovieList
