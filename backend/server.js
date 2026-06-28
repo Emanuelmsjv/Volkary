@@ -23,32 +23,41 @@ async function start() {
 
 
     app.get('/popular', async (req, res) => {
-        const url = `${TMDB_BASE}/movie/popular?api_key=${TMDB_KEY}`
+        const page = req.query.page || 1
+        const url = `${TMDB_BASE}/movie/popular?api_key=${TMDB_KEY}&page=${page}`
         const resp = await fetch(url)
         const data = await resp.json()
-        res.json(data.results.map(m => ({
-            tmdbId: m.id,
-            title: m.title,
-            year: m.release_date?.slice(0, 4),
-            poster: m.poster_path,
-            genre: m.genre_ids?.join(',')
-        })))
+        res.json({
+            results: data.results.map(m => ({
+                tmdbId: m.id,
+                title: m.title,
+                year: m.release_date?.slice(0, 4),
+                poster: m.poster_path,
+                genre: m.genre_ids?.join(',')
+            })),
+            totalPages: data.total_pages,
+            page: data.page
+        })
     })
 
     app.get('/search', async (req, res) => {
         const query = req.query.q
-        if (!query) return res.json([])
-        const url = `${TMDB_BASE}/search/movie?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
+        const page = req.query.page || 1
+        if (!query) return res.json({ results: [], totalPages: 0, page: 1 })
+        const url = `${TMDB_BASE}/search/movie?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}&page=${page}`
         const resp = await fetch(url)
         const data = await resp.json()
-        res.json(data.results.map(m => ({
-
-            tmdbId: m.id,
-            title: m.title,
-            year: m.release_date?.slice(0, 4),
-            poster: m.poster_path,
-            genre: m.genre_ids?.join(',')
-        })))
+        res.json({
+            results: data.results.map(m => ({
+                tmdbId: m.id,
+                title: m.title,
+                year: m.release_date?.slice(0, 4),
+                poster: m.poster_path,
+                genre: m.genre_ids?.join(',')
+            })),
+            totalPages: data.total_pages,
+            page: data.page
+        })
     })
 
 
