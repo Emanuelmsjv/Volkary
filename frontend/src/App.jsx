@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import AddMovie from './AddMovie'
+import SearchMovie from './SearchMovie'
 import MovieList from './MovieList'
 import './App.css'
 
@@ -14,12 +14,7 @@ function App() {
       .then(data => setMovies(data))
   }, [])
 
-  const addMovie = async (movie) => {
-    await fetch(`${API}/movies`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(movie)
-    })
+  const addMovie = async () => {
     const res = await fetch(`${API}/movies`)
     const data = await res.json()
     setMovies(data)
@@ -42,7 +37,7 @@ function App() {
   return (
     <div className='app'>
       <h1>Movie Watchlist</h1>
-      <AddMovie onAdd={addMovie} />
+      <SearchMovie onAdd={addMovie} />
       <MovieList movies={movies} onToggle={toggleWatched} onDelete={deleteMovie} />
     </div>
   )

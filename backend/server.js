@@ -18,15 +18,58 @@ async function start() {
     await client.connect()
     const db = client.db("watchlist")
     const movies = db.collection('movies')
+    const TMDB_KEY = process.env.TMDB_API_KEY
+    const TMDB_BASE = 'https://api.themoviedb.org/3'
+
+
+    app.get('/popular', async (req, res) => {
+        const url = `${TMDB_BASE}/movie/popular?api_key=${TMDB_KEY}`
+        const resp = await fetch(url)
+        const data = await resp.json()
+        res.json(data.results.map(m => ({
+            tmdbId: m.id,
+            title: m.title,
+            year: m.release_date?.slice(0, 4),
+            poster: m.poster_path,
+            genre: m.genre_ids?.join(',')
+        })))
+    })
+
+    app.get('/search', async (req, res) => {
+        const query = req.query.q
+        if (!query) return res.json([])
+        const url = `${TMDB_BASE}/search/movie?api_key=${TMDB_KEY}&query=${encodeURIComponent(query)}`
+        const resp = await fetch(url)
+        const data = await resp.json()
+        res.json(data.results.map(m => ({
+
+            tmdbId: m.id,
+            title: m.title,
+            year: m.release_date?.slice(0, 4),
+            poster: m.poster_path,
+            genre: m.genre_ids?.join(',')
+        })))
+    })
+
+
 
     app.get('/movies', async (req, res) => {
         const allMovies = await movies.find().toArray()
         res.json(allMovies)
     })
 
+
+
+
     app.post('/movies', async (req, res) => {
-        const { title, year, genre, poster } = req.body
-        const result = await movies.insertOne({ title, year, genre, poster, watched: false, createdAt: new Date() })
+        const { tmdbId, title, year, genre, poster } = req.body
+        if (tmdbId) {
+            const existing = await movies.findOne({ tmdbId })
+            if (existing) {
+                return res.status(409).json({ message: 'Movie already in your watchlist' })
+            }
+        }
+        const result = await movies.insertOne({ tmdbId, title, year, genre, poster, watched: false, createdAt: new Date() })
         res.json(result)
     })
 
