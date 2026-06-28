@@ -7,8 +7,8 @@ const app = express()
 
 // Configure CORS to accept requests from Vercel domain
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://volkary.vercel.app', 'https://volkary-melwin.vercel.app'],
-  credentials: true
+    origin: ['http://localhost:5173', 'https://volkary-melwin.vercel.app'],
+    credentials: true
 }))
 
 app.use(express.json())
